@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
  
-enum lol {
+enum original_type {
     Isotype,
     Radioactive,
     Ion,
@@ -17,7 +17,7 @@ public:
     int atomic_mass_unit;
     int protons_number;
     int electrons_number;
-    lol type;
+    original_type type;
     bool IsNeutral();
  
 Atom() {
@@ -25,7 +25,7 @@ Atom() {
     atomic_mass_unit = 1;
     protons_number = 1;
     electrons_number = 1;
-    lol type = Stable;
+    type = Stable;
 }
  
 Atom(std::string a, int b, int c, int d, lol e) {
@@ -39,7 +39,7 @@ Atom(std::string a, int b, int c, int d, lol e) {
 };
  
 bool Atom::IsNeutral() {
-    if (Atom::protons_number == Atom::electrons_number) {
+    if (protons_number == electrons_number) {
         return true;
     } else {
         return false;
@@ -52,7 +52,6 @@ bool Atom::IsNeutral() {
 class Molecule
 {
 public:
-  friend Atom;
  
   std::string name;
   std::vector<Atom> Atoms;
@@ -77,22 +76,24 @@ Molecule(std::string a, std::vector<Atom> b) {
 
 float Molecule::FindAverageMass(){
 	int sum = 0;
-	for (int i = 0; i < Atoms.size(); i++)
+    int length_of_vector = Atoms.size();
+	for (int i = 0; i < length_of_vector; i++)
 		sum = sum + Atoms[i].atomic_mass_unit;
-	return sum/Atoms.size();
+	return sum / length_of_vector();
 }
 
 void Molecule::SortAtoms(){
-int n = Atoms.size();
+int length_of_vector = Atoms.size();
 
-for (int j=0; j<n; j++){
-int nmin=j;
+for (int j = 0; j < length_of_vector; j++){
+int current_number_of_sorting=j;
 
-	for (int k=j+1; k<n; k++)
-	if(Atoms[k].atomic_mass_unit<Atoms[nmin].atomic_mass_unit) nmin=k;
+	for (int current_number = j+1; current_number < length_of_vector; current_number++)
+	if(Atoms[current_number].atomic_mass_unit<Atoms[current_number_of_sorting].atomic_mass_unit)
+        current_number_of_sorting=current_number;
 	Atom p = Atoms[j];
-	Atoms[j] = Atoms[nmin];
-	Atoms[nmin] = p;
+	Atoms[j] = Atoms[current_number_of_sorting];
+	Atoms[current_number_of_sorting] = p;
 
 }
 	
@@ -103,7 +104,7 @@ int main(){
 	Molecule M;
 	M.SortAtoms();
 	
-	for (int i = 1; i <= M.Atoms.size(); i++) {
+	for (int i = 0; i <= M.Atoms.size(); i++) {
         std::cout << "Назва: " << M.Atoms[i].name << std::endl;
         std::cout << "Порядковий номер: " << i << std::endl;
         std::cout << "Маса: " << M.Atoms[i].atomic_mass_unit << std::endl;
